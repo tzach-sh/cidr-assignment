@@ -1,7 +1,5 @@
 package cidr.security
 
-data class IpRange(val range: LongRange)
-
 
 class IPAddress(var ipAddress: String) {
     var binaryIpAddressArray: List<String>? = null
@@ -39,7 +37,6 @@ class IPAddress(var ipAddress: String) {
         var result = 0.0
         splittedIp.forEachIndexed { ndx, item ->
             val power = 3 - ndx
-//        result += Integer.parseInt(item) * Math.pow(256.0, power.toDouble())
             result += item.toLong() shl (8 * (power))
         }
         return result.toLong()

@@ -3,7 +3,7 @@ package cidr.security
 import java.lang.Long.max
 import java.lang.Long.min
 
-class UnauthorizedCIDRRequests(cidrIpAddressList: List<String>) {
+class CidrRequests(cidrIpAddressList: List<String>) {
     private var constantPrefixLength = 0
     var unauthorizedIpAddresses: MutableList<IpRange> = mutableListOf()
 
@@ -13,7 +13,7 @@ class UnauthorizedCIDRRequests(cidrIpAddressList: List<String>) {
                 val (ip, stringCidr) = it.split('/')
                 val ipAddress = IPAddress(ip)
                 constantPrefixLength = stringCidr.toInt()
-                unauthorizedIpAddresses.addOverlapped(cidrRangeCalculate(ipAddress))
+                unauthorizedIpAddresses.addRange(cidrRangeCalculate(ipAddress))
             } else {
                 throw IllegalArgumentException("only CIDR format is Allowed")
             }
@@ -43,7 +43,7 @@ class UnauthorizedCIDRRequests(cidrIpAddressList: List<String>) {
 
     fun isAllowed(incomingIp: String): Boolean = !isInRange(incomingIp)
 
-    private fun MutableList<IpRange>.addOverlapped(range: IpRange) {
+    private fun MutableList<IpRange>.addRange(range: IpRange) {
         if (this.isEmpty()) {
             this.add(range)
         } else {
@@ -80,3 +80,5 @@ class UnauthorizedCIDRRequests(cidrIpAddressList: List<String>) {
         return unauthorizedIpAddresses.any { it.range.contains(ipAddressLong) }
     }
 }
+
+data class IpRange(val range: LongRange)
