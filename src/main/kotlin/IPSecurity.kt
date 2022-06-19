@@ -22,7 +22,7 @@ class CidrRequests(cidrIpAddressList: List<String>) {
 
     private fun cidrRangeCalculate(ipAddress: IPAddress): IpRange {
         val fullBinaryRepresentation = ipAddress.binaryIpAddressArray?.joinToString("")
-        val ipRange = rangeIp(fullBinaryRepresentation, constantPrefixLength)
+        val ipRange = ipBinaryRange(fullBinaryRepresentation, constantPrefixLength)
         val startRange = ipRange.first.chunked(8)
         val endRange = ipRange.second.chunked(8)
         val startRangeIP = IPAddress(startRange.binaryToDecimal().joinToString("."))
@@ -30,10 +30,10 @@ class CidrRequests(cidrIpAddressList: List<String>) {
         return IpRange(LongRange(startRangeIP.ipToLong(), endRangeIp.ipToLong()))
     }
 
-    private fun rangeIp(stringBytes: String?, host_bits: Int): Pair<String, String> {
-        val bits = 32 - host_bits
-        val startRange = stringBytes?.substring(0, host_bits) + "0".repeat(bits)
-        val endRange = stringBytes?.substring(0, host_bits) + "1".repeat(bits)
+    private fun ipBinaryRange(stringBytes: String?, prefixBits: Int): Pair<String, String> {
+        val bits = 32 - prefixBits
+        val startRange = stringBytes?.substring(0, prefixBits) + "0".repeat(bits)
+        val endRange = stringBytes?.substring(0, prefixBits) + "1".repeat(bits)
         return Pair(startRange, endRange)
     }
 
