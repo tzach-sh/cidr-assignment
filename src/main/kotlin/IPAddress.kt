@@ -1,9 +1,9 @@
 package cidr.security
 
 
-class IPAddress(var ipAddress: String) {
+class IPAddress(private var ipAddress: String) {
     var binaryIpAddressArray: List<String>? = null
-    val ipRegex = """\b((25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)(\.|$)){4}\b""".toRegex()
+    private val ipRegex = """\b((25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)(\.|$)){4}\b""".toRegex()
 
     init {
         if (ipAddress.matches(ipRegex)) {
